@@ -101,7 +101,7 @@ public class DeviceIdPlugin implements MethodCallHandler {
 
                         byte[] macBytes = nif.getHardwareAddress();
                         if (macBytes == null) {
-                            result.error("1", "Error getting mac address", "");
+                            result.success("02:00:00:00:00:00");
                         }
 
                         StringBuilder res1 = new StringBuilder();
@@ -115,7 +115,7 @@ public class DeviceIdPlugin implements MethodCallHandler {
                         result.success(res1.toString());
                     }
                 } catch (Exception ex) {
-                    result.error("1", "Error getting mac address", "02:00:00:00:00:00");
+                    result.success("02:00:00:00:00:00");
                 }
             }
             default:
