@@ -117,6 +117,7 @@ public class DeviceIdPlugin implements MethodCallHandler {
                 } catch (Exception ex) {
                     result.success("02:00:00:00:00:00");
                 }
+                break;
             }
             default:
                 result.notImplemented();
