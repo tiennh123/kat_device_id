@@ -1,12 +1,15 @@
 # device_id
 
-A Flutter plugin for retrieving the uid of a device
+A new flutter plugin project.
 
 ## Getting Started
 
-To retrieve the id just import and call `String device_id = await DeviceId.getID;`.
-To retrieve the imei call `String imei = await DeviceId.getIMEI;`.
-To retrieve the meid call `String meid = await DeviceId.getMEID;`.
-For imei and meid platform version >=26 is required, otherwise it will produces a PlatformExcpetion
-Now you are good to go!
-Note: device ids are not safe as you think, rooted/jailbreaked devices are able to change the ids.
+This project is a starting point for a Flutter
+[plug-in package](https://flutter.dev/developing-packages/),
+a specialized package that includes platform-specific implementation code for
+Android and/or iOS.
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+

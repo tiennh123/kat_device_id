@@ -1,14 +1,15 @@
 #import "DeviceIdPlugin.h"
-#import <Flutter/Flutter.h>
+#if __has_include(<device_id/device_id-Swift.h>)
+#import <device_id/device_id-Swift.h>
+#else
+// Support project import fallback if the generated compatibility header
+// is not copied when this plugin is created as a library.
+// https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
+#import "device_id-Swift.h"
+#endif
 
 @implementation DeviceIdPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    FlutterMethodChannel *channel = [FlutterMethodChannel methodChannelWithName:@"device_id" binaryMessenger:registrar.messenger];
-    DeviceIdPlugin *instance = [[DeviceIdPlugin alloc] init];
-    [registrar addMethodCallDelegate:instance channel:channel];
-}
-
-- (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
-    result(UIDevice.currentDevice.identifierForVendor.UUIDString);
+  [SwiftDeviceIdPlugin registerWithRegistrar:registrar];
 }
 @end

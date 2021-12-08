@@ -1,72 +1,78 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:device_id/device_id.dart';
 import 'package:flutter/services.dart';
+import 'package:device_id/device_id.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => new _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _deviceid = 'Unknown';
   String _gsf = 'Unknown';
   String _macAddress = 'Unknown';
+  String _carrierName = 'Unknown';
 
   @override
   void initState() {
     super.initState();
-    initDeviceId();
+    initPlatformState();
   }
 
-  Future<void> initDeviceId() async {
-    String deviceid;
-    String imei;
-    String meid;
-    String gsf;
-    String macAddress;
-
-    deviceid = await DeviceId.getID;
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    String gsf = '';
+    String macAddress = '';
+    String carrierName = '';
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
     try {
-      imei = await DeviceId.getIMEI;
-      meid = await DeviceId.getMEID;
-      gsf = await DeviceId.getGsf;
-      macAddress = await DeviceId.getMacAddress;
-    } on PlatformException catch (e) {
-      print(e.message);
+      gsf = await DeviceId.getGsf ?? '';
+      macAddress = await DeviceId.getMacAddress ?? '02:00:00:00:00:00';
+      carrierName = await DeviceId.getCarrierName ?? '';
+    } on PlatformException {
+      gsf = 'Failed to get platform version.';
+      macAddress = 'Failed to get platform version.';
+      carrierName = 'Failed to get platform version.';
     }
 
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
-      _deviceid =
-          'Your deviceid: $deviceid\nYour IMEI: $imei\nYour MEID: $meid';
       _gsf = 'GSF: $gsf';
       _macAddress = 'MAC ADDRESS: $macAddress';
+      _carrierName = 'CARRIER NAME: $carrierName';
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: const Text('Device Id example app'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
         ),
-        body: new Column(
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            new Center(
-              child: new Text('$_deviceid'),
+            Center(
+              child: Text(_gsf),
             ),
-            new Center(
-              child: new Text('$_gsf'),
+            Center(
+              child: Text(_macAddress),
             ),
-            new Center(
-              child: new Text('$_macAddress'),
+            Center(
+              child: Text(_carrierName),
             ),
           ],
         ),

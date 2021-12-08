@@ -1,4 +1,3 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.notrait.deviceid">
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  package="com.example.device_id">
 </manifest>
